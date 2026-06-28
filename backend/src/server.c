@@ -258,7 +258,7 @@ static enum MHD_Result gerer_post_recommandation(struct MHD_Connection *connecti
         free_resultat_recherche(&resultat);
         cJSON_Delete(root);
         return queue_json_response(connection, MHD_HTTP_INTERNAL_SERVER_ERROR,
-            "{\"erreur\":\"Echec sauvegarde SQLite\"}");
+            "{\"erreur\":\"Echec sauvegarde base de donnees\"}");
     }
 
     free_resultat_recherche(&resultat);

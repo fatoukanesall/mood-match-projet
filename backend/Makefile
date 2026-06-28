@@ -4,7 +4,7 @@ CC = gcc
 # make GEMINI_API_KEY=... DB_PATH=... PORT=8080
 CFLAGS = -Wall -Wextra -Werror -std=c11 -I./src
 LDFLAGS =
-LDLIBS = -lmicrohttpd -lsqlite3 -lcurl -lcjson
+LDLIBS = -lmicrohttpd -lpq -lcurl -lcjson
 
 TARGET = moodmatch_backend
 TEST_TARGET = moodmatch_tests

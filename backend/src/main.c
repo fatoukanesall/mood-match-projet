@@ -18,7 +18,6 @@
 #endif
 
 #define DEFAULT_PORT 8080
-#define DEFAULT_DB_PATH "./moodmatch.db"
 
 static volatile sig_atomic_t g_keep_running = 1;
 
@@ -46,7 +45,7 @@ static unsigned short lire_port_env(const char *port_str) {
 
 int main(void) {
     const char *groq_api_key = getenv("GROQ_API_KEY");
-    const char *db_path = getenv("DB_PATH");
+    const char *database_url = getenv("DATABASE_URL");
     const char *port_env = getenv("PORT");
     unsigned short port;
 
@@ -56,8 +55,9 @@ int main(void) {
         return 1;
     }
 
-    if (!db_path || db_path[0] == '\0') {
-        db_path = DEFAULT_DB_PATH;
+    if (!database_url || database_url[0] == '\0') {
+        fprintf(stderr, "[main] Variable d'environnement DATABASE_URL manquante.\n");
+        return 1;
     }
 
     port = lire_port_env(port_env);
@@ -65,14 +65,14 @@ int main(void) {
     signal(SIGINT, handle_signal);
     signal(SIGTERM, handle_signal);
 
-    if (demarrer_serveur(port, db_path) != 0) {
+    if (demarrer_serveur(port, "postgres") != 0) {
         fprintf(stderr, "[main] Echec demarrage serveur sur le port %hu\n", port);
         return 1;
     }
 
     printf("[main] MoodMatch backend actif\n");
     printf("[main] URL: http://localhost:%hu\n", port);
-    printf("[main] DB: %s\n", db_path);
+    printf("[main] DB: Supabase PostgreSQL\n");
     printf("[main] Appuyer sur CTRL+C pour arreter.\n");
 
     while (g_keep_running) {
