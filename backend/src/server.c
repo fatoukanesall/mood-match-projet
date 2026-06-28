@@ -495,7 +495,7 @@ static enum MHD_Result route_request(
         if (*upload_data_size > 0) {
             size_t new_len = ctx->body_len + *upload_data_size;
             if (new_len > MAX_REQUEST_BODY_LEN)
-                return queue_json_response(connection, MHD_HTTP_REQUEST_ENTITY_TOO_LARGE,
+                return queue_json_response(connection, MHD_HTTP_CONTENT_TOO_LARGE,
                     "{\"erreur\":\"Body trop volumineux\"}");
             char *new_body = (char *)realloc(ctx->body, new_len + 1);
             if (!new_body) return MHD_NO;
@@ -514,7 +514,7 @@ static enum MHD_Result route_request(
         if (*upload_data_size > 0) {
             size_t new_len = ctx->body_len + *upload_data_size;
             if (new_len > MAX_REQUEST_BODY_LEN)
-                return queue_json_response(connection, MHD_HTTP_REQUEST_ENTITY_TOO_LARGE,
+                return queue_json_response(connection, MHD_HTTP_CONTENT_TOO_LARGE,
                     "{\"erreur\":\"Body trop volumineux\"}");
             char *new_body = (char *)realloc(ctx->body, new_len + 1);
             if (!new_body) return MHD_NO;
@@ -541,7 +541,7 @@ static enum MHD_Result route_request(
         if (*upload_data_size > 0) {
             size_t new_len = ctx->body_len + *upload_data_size;
             if (new_len > MAX_REQUEST_BODY_LEN)
-                return queue_json_response(connection, MHD_HTTP_REQUEST_ENTITY_TOO_LARGE,
+                return queue_json_response(connection, MHD_HTTP_CONTENT_TOO_LARGE,
                     "{\"erreur\":\"Body trop volumineux\"}");
             char *new_body = (char *)realloc(ctx->body, new_len + 1);
             if (!new_body) return MHD_NO;
