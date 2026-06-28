@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            pkg-config \
+            libsqlite3-dev \
+            libcurl4-openssl-dev \
+            libcjson-dev \
+            libmicrohttpd-dev
+
+      - name: Build backend
+        run: make clean && make
+
+      - name: Run tests
+        run: make test

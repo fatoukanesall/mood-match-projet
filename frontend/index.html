@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodMatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Modal pseudo (affichée uniquement à la première visite) -->
+  <div id="pseudoModal" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <div class="modal-icon">👋</div>
+      <h2 id="modalTitle">Bienvenue sur MoodMatch</h2>
+      <p>Choisis un pseudo unique — ce sera ton identifiant personnel sur MoodMatch.</p>
+      <input id="pseudoInput" type="text" placeholder="Ton pseudo..." maxlength="32" autocomplete="off" />
+      <p id="pseudoErreur" style="color:#c24a2c;font-size:0.88rem;margin:0 0 10px;min-height:1.2em"></p>
+      <button id="pseudoConfirmBtn" class="submit-btn" disabled>C'est parti →</button>
+    </div>
+  </div>
+
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+
+  <main class="page">
+    <header class="hero" role="banner">
+      <h1>MoodMatch</h1>
+      <p class="hero-subtitle">
+        Bonjour, je suis <strong style="color:var(--accent)">Fatou Sall</strong> — dis-moi comment tu vas, je m'occupe du reste.
+      </p>
+      <p class="hero-pseudo" id="heroPseudo" style="display:none">
+        Connecté en tant que <strong id="pseudoDisplay"></strong>
+        <button id="changePseudoBtn" class="pseudo-change-btn">changer</button>
+      </p>
+      <p role="note" style="font-size:13px;color:var(--muted);margin-top:6px">Ton assistante culturelle propulsée par l'IA</p>
+    </header>
+
+    <section id="formPanel" class="panel" aria-label="Formulaire de recommandation">
+      <label for="humeurInput" class="label">Ton humeur en une phrase</label>
+      <textarea id="humeurInput" rows="4" placeholder="Ex: Je suis stressé par ma soutenance et j'ai besoin de courage"></textarea>
+
+      <p class="label">Catégories souhaitées</p>
+      <div class="type-buttons" id="type-buttons" role="group" aria-label="Choix des catégories">
+        <button class="type-btn" data-type="film"  type="button" aria-pressed="false"><span class="type-icon">🎬</span><span class="type-label">Film</span></button>
+        <button class="type-btn" data-type="serie" type="button" aria-pressed="false"><span class="type-icon">📺</span><span class="type-label">Série</span></button>
+        <button class="type-btn" data-type="livre" type="button" aria-pressed="false"><span class="type-icon">📚</span><span class="type-label">Livre</span></button>
+        <button class="type-btn" data-type="anime" type="button" aria-pressed="false"><span class="type-icon">🌸</span><span class="type-label">Anime</span></button>
+      </div>
+      <div class="sr-only" aria-hidden="true">
+        <input type="checkbox" name="category" value="film" />
+        <input type="checkbox" name="category" value="serie" />
+        <input type="checkbox" name="category" value="livre" />
+        <input type="checkbox" name="category" value="anime" />
+      </div>
+
+      <p class="label">Ce que tu veux ressentir après</p>
+      <div id="modeGrid" class="mode-grid" role="radiogroup" aria-label="Mode d'accompagnement">
+        <label class="mode-pill"><input type="radio" name="mode" value="courage"     checked /> 💪 Courage</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="consolation" /> 🤗 Consolation</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="pleurer"     /> 😭 Pleurer</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="rire"        /> 😂 Rire</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="evasion"     /> 🌍 Évasion</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="reflexion"   /> 🤔 Réflexion</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="adrenaline"  /> ⚡ Adrénaline</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="douceur"     /> 🍵 Douceur</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="apprendre"   /> 📚 Apprendre</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="inspirer"    /> ✨ Inspirer</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="nostalgie"   /> 🕰️ Nostalgie</label>
+        <label class="mode-pill"><input type="radio" name="mode" value="choc"        /> 💥 Choc</label>
+      </div>
+
+      <div style="display:flex; justify-content:center; margin-top:24px;">
+        <button id="submit-btn" class="submit-btn" disabled>
+          <span class="btn-text">Trouver mes œuvres</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+      <p id="statusMsg" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="loading" class="loading hidden" aria-live="polite">
+      <div class="loader" aria-hidden="true"></div>
+      <div class="loading-rotator">
+        <span class="loading-message">Fatou Sall analyse ton humeur...</span>
+        <span class="loading-message">On cherche l'œuvre parfaite pour toi...</span>
+        <span class="loading-message">Quelque part, une œuvre t'attend...</span>
+        <span class="loading-message">Patience. Fatou Sall s'occupe de tout.</span>
+        <span class="loading-message">L'IA consulte des milliers d'œuvres...</span>
+      </div>
+    </section>
+
+    <!-- Navigation par onglets -->
+    <nav class="tab-nav" role="tablist" aria-label="Sections">
+      <button class="tab-btn active" data-tab="results"   role="tab" aria-selected="true">✨ Résultats</button>
+      <button class="tab-btn"        data-tab="history"   role="tab" aria-selected="false">📋 Mon historique</button>
+      <button class="tab-btn"        data-tab="favorites" role="tab" aria-selected="false">❤ Mes favoris</button>
+    </nav>
+
+    <!-- Onglet Résultats -->
+    <div id="tab-results" class="tab-panel results-wrap" role="tabpanel">
+      <div class="fatou-banner" role="status" aria-live="polite" style="display:none">
+        <span class="fatou-banner__icon">💬</span>
+        <p class="fatou-banner__text"></p>
+      </div>
+      <div id="message-ami" class="message-ami hidden"></div>
+      <div id="results"></div>
+    </div>
+
+    <!-- Onglet Historique -->
+    <div id="tab-history" class="tab-panel results-wrap hidden" role="tabpanel">
+      <div class="tab-panel-header">
+        <h2 class="tab-panel-title">📋 Mon historique</h2>
+        <p class="tab-panel-sub">Toutes tes recherches passées</p>
+      </div>
+      <div id="history" class="cards"></div>
+    </div>
+
+    <!-- Onglet Favoris -->
+    <div id="tab-favorites" class="tab-panel results-wrap hidden" role="tabpanel">
+      <div class="tab-panel-header">
+        <h2 class="tab-panel-title">❤ Mes favoris</h2>
+        <p class="tab-panel-sub">Les œuvres que tu as sauvegardées</p>
+      </div>
+      <div id="favorites" class="cards"></div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Fatoumata Sall</p>
+    <p>Une étudiante qui avait besoin de ça. Alors elle l'a construit.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

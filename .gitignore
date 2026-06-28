@@ -1,0 +1,24 @@
+# Build artifacts
+*.o
+*.out
+*.exe
+
+# Binaries and temp
+bin/
+build/
+*.log
+
+# SQLite local files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files
+.env
+.env.local
+config.bat
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
