@@ -2,7 +2,7 @@ CC = gcc
 
 # Tu peux surcharger ces variables:
 # make GEMINI_API_KEY=... DB_PATH=... PORT=8080
-CFLAGS = -Wall -Wextra -Werror -std=c11 -D_POSIX_C_SOURCE=200809L -I./src
+CFLAGS = -Wall -Wextra -Werror -std=c11 -D_POSIX_C_SOURCE=200809L -I./src -I/usr/include/postgresql
 LDFLAGS =
 LDLIBS = -lmicrohttpd -lpq -lcurl -lcjson
 
