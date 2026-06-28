@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://mood-match-projet.onrender.com";
 
 /* ===== IDENTITE UTILISATEUR =====
    Le pseudo EST l'identifiant unique en base (colonne UNIQUE dans la table utilisateurs).
